@@ -63,25 +63,33 @@
 
 :root {
   --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.129 0.042 264.695);
+  --background: oklch(0.99 0.005 20);
+  --foreground: oklch(0.18 0.03 25);
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.129 0.042 264.695);
+  --card-foreground: oklch(0.18 0.03 25);
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.129 0.042 264.695);
-  --primary: oklch(0.208 0.042 265.755);
-  --primary-foreground: oklch(0.984 0.003 247.858);
-  --secondary: oklch(0.968 0.007 247.896);
-  --secondary-foreground: oklch(0.208 0.042 265.755);
-  --muted: oklch(0.968 0.007 247.896);
-  --muted-foreground: oklch(0.554 0.046 257.417);
-  --accent: oklch(0.968 0.007 247.896);
-  --accent-foreground: oklch(0.208 0.042 265.755);
+  --popover-foreground: oklch(0.18 0.03 25);
+  --primary: oklch(0.55 0.22 25);
+  --primary-foreground: oklch(0.99 0.005 20);
+  --primary-glow: oklch(0.65 0.24 28);
+  --primary-deep: oklch(0.42 0.20 25);
+  --secondary: oklch(0.96 0.01 20);
+  --secondary-foreground: oklch(0.22 0.04 25);
+  --muted: oklch(0.96 0.008 20);
+  --muted-foreground: oklch(0.50 0.02 25);
+  --accent: oklch(0.95 0.03 25);
+  --accent-foreground: oklch(0.42 0.20 25);
   --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: oklch(0.984 0.003 247.858);
-  --border: oklch(0.929 0.013 255.508);
-  --input: oklch(0.929 0.013 255.508);
-  --ring: oklch(0.704 0.04 256.788);
+  --destructive-foreground: oklch(0.99 0 0);
+  --border: oklch(0.91 0.01 25);
+  --input: oklch(0.93 0.01 25);
+  --ring: oklch(0.55 0.22 25);
+  --success: oklch(0.60 0.16 150);
+  --whatsapp: oklch(0.62 0.18 150);
+  --gradient-hero: linear-gradient(135deg, oklch(0.55 0.22 25), oklch(0.42 0.20 25));
+  --gradient-soft: linear-gradient(180deg, oklch(0.99 0.005 20), oklch(0.96 0.02 25));
+  --shadow-elegant: 0 20px 50px -20px oklch(0.55 0.22 25 / 0.35);
+  --shadow-card: 0 8px 30px -10px oklch(0.18 0.03 25 / 0.12);
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
@@ -140,5 +148,17 @@
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
+    font-family: 'Inter', system-ui, sans-serif;
   }
+  h1, h2, h3, h4 {
+    font-family: 'Playfair Display', Georgia, serif;
+    letter-spacing: -0.02em;
+  }
+}
+
+@theme inline {
+  --color-primary-glow: var(--primary-glow);
+  --color-primary-deep: var(--primary-deep);
+  --color-success: var(--success);
+  --color-whatsapp: var(--whatsapp);
 }
