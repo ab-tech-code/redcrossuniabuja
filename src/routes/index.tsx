@@ -1,29 +1,18 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { MembershipApp } from "@/components/MembershipApp";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Your App" },
-      { name: "description", content: "Replace this with a one-sentence description of your app." },
-      { property: "og:title", content: "Your App" },
-      { property: "og:description", content: "Replace this with a one-sentence description of your app." },
+      { title: "Red Cross Club — University of Abuja Membership" },
+      { name: "description", content: "Join the Red Cross Club at the University of Abuja. Volunteer, train, and serve your community through humanitarian action." },
+      { property: "og:title", content: "Red Cross Club — University of Abuja" },
+      { property: "og:description", content: "Become a member of the Red Cross Club at the University of Abuja." },
     ],
   }),
   component: Index,
 });
 
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
 function Index() {
-  return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
-    </div>
-  );
+  return <MembershipApp />;
 }
