@@ -53,12 +53,10 @@ const schema = z.object({
     .trim()
     .min(10, "Tell us why in at least 10 characters")
     .max(800),
-  volunteerExperience: z.string().trim().max(500).optional().default(""),
-  skills: z.string().trim().max(500).optional().default(""),
+  volunteerExperience: z.string().trim().max(500).default(""),
+  skills: z.string().trim().max(500).default(""),
   availability: z.string().min(1, "Please select your availability"),
-  consent: z.literal(true, {
-    errorMap: () => ({ message: "You must give consent to continue" }),
-  }),
+  consent: z.literal(true, { message: "You must give consent to continue" }),
 });
 
 type FormData = z.infer<typeof schema>;
