@@ -59,7 +59,8 @@ const schema = z.object({
   consent: z.literal(true, { message: "You must give consent to continue" }),
 });
 
-type FormData = z.infer<typeof schema>;
+type FormData = z.output<typeof schema>;
+type FormInput = z.input<typeof schema>;
 
 type Stage = "intro" | "form" | "payment" | "submit";
 
@@ -318,7 +319,7 @@ function FormSection({
   onSubmit,
   onBack,
 }: {
-  defaultValues?: Partial<FormData>;
+  defaultValues?: Partial<FormInput>;
   onSubmit: (data: FormData) => void;
   onBack: () => void;
 }) {
@@ -328,9 +329,9 @@ function FormSection({
     setValue,
     watch,
     formState: { errors, isSubmitting },
-  } = useForm<FormData>({
+  } = useForm<FormInput, unknown, FormData>({
     resolver: zodResolver(schema),
-    defaultValues: defaultValues as FormData,
+    defaultValues: defaultValues as FormInput,
     mode: "onTouched",
   });
 
