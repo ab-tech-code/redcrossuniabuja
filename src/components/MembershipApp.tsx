@@ -705,7 +705,7 @@ function DetailRow({
 
 /* ---------------- Submit / WhatsApp ---------------- */
 
-function buildWhatsAppMessage(data: FormData, paid: boolean) {
+function buildWhatsAppMessage(data: FormData) {
   const lines = [
     "*RED CROSS CLUB — UNIABUJA*",
     "_New Membership Submission_",
@@ -731,23 +731,22 @@ function buildWhatsAppMessage(data: FormData, paid: boolean) {
     `*12. Availability:* ${data.availability}`,
     "",
     `*Consent:* ✅ Given`,
-    `*Payment:* ${paid ? `✅ Paid — ₦${clubConfig.membershipFee.toLocaleString()}` : "Pending"}`,
+    `*Payment:* ⏳ Confirmation Pending — ₦${clubConfig.membershipFee.toLocaleString()}`,
+    `_(Name on payment must match the Full Name above.)_`,
     "",
-    "_(Please attach payment receipt to this chat.)_",
+    "_(Please attach your payment receipt to this chat.)_",
   ];
   return lines.join("\n");
 }
 
 function SubmitSection({
   data,
-  paymentConfirmed,
 }: {
   data: FormData;
-  paymentConfirmed: boolean;
 }) {
   const message = useMemo(
-    () => buildWhatsAppMessage(data, paymentConfirmed),
-    [data, paymentConfirmed],
+    () => buildWhatsAppMessage(data),
+    [data],
   );
   const waUrl = `https://wa.me/${clubConfig.whatsappNumber}?text=${encodeURIComponent(message)}`;
 
