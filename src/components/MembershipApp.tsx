@@ -635,9 +635,15 @@ function PaymentSection({
 
         <div className="border-t border-border bg-muted/40 p-5 text-sm text-muted-foreground">
           <p>
-            After transferring, click <span className="font-semibold text-foreground">"I've paid"</span> below.
-            On the next step you'll send your details and proof of payment to our
-            coordinator on WhatsApp.
+            After transferring, click{" "}
+            <span className="font-semibold text-foreground">"Payment Complete"</span>{" "}
+            below. On the next step you'll send your details and a screenshot of
+            your payment receipt to our coordinator on WhatsApp.
+          </p>
+          <p className="mt-3 rounded-lg border border-primary/20 bg-primary/5 p-3 text-foreground">
+            <span className="font-semibold">Important:</span> the name you use
+            in this form must match the name used to make the bank transfer.
+            This is how we verify your payment.
           </p>
         </div>
       </div>
@@ -659,7 +665,7 @@ function PaymentSection({
           onClick={onConfirm}
           className="h-11 rounded-full bg-gradient-to-r from-primary to-primary-deep px-7 font-semibold shadow-[0_15px_30px_-12px_var(--primary)]"
         >
-          <Check className="size-4" /> I've Paid — Continue
+          <Check className="size-4" /> Payment Complete — Continue
         </Button>
       </div>
     </motion.section>
@@ -776,17 +782,24 @@ function SubmitSection({
         initial={{ scale: 0.6, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         transition={{ type: "spring", stiffness: 180, damping: 14 }}
-        className="mx-auto grid size-16 place-items-center rounded-full bg-[color:var(--success)]/15 text-[color:var(--success)]"
+        className="mx-auto grid size-16 place-items-center rounded-full bg-primary/10 text-primary"
       >
-        <Check className="size-8" />
+        <Clock className="size-8" />
       </motion.div>
 
       <h2 className="mt-6 text-center text-3xl font-bold sm:text-4xl">
-        Payment confirmed. One last step.
+        Payment confirmation pending.
       </h2>
       <p className="mx-auto mt-3 max-w-xl text-center text-muted-foreground">
-        Send your filled form and proof of payment to our coordinator on
-        WhatsApp to finalize your membership.
+        We haven't verified your payment yet — that's the next step. Please
+        submit your filled form together with a screenshot of your payment
+        receipt to our coordinator on WhatsApp so we can confirm and finalize
+        your membership.
+      </p>
+      <p className="mx-auto mt-3 max-w-xl rounded-xl border border-primary/20 bg-primary/5 p-3 text-center text-sm text-foreground">
+        <span className="font-semibold">Reminder:</span> the name you used in
+        this form must match the name used for the bank transfer. Attach your
+        payment receipt before sending.
       </p>
 
       <div className="mt-8 rounded-3xl border border-border/60 bg-card p-6 shadow-[var(--shadow-card)] sm:p-8">
