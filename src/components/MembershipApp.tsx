@@ -67,13 +67,11 @@ type Stage = "intro" | "form" | "payment" | "submit";
 export function MembershipApp() {
   const [stage, setStage] = useState<Stage>("intro");
   const [data, setData] = useState<FormData | null>(null);
-  const [paymentConfirmed, setPaymentConfirmed] = useState(false);
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <div className="relative text-foreground">
       <Toaster position="top-center" richColors />
       <BackgroundOrnaments />
-      <Header />
 
       <main className="relative">
         <AnimatePresence mode="wait">
@@ -95,7 +93,6 @@ export function MembershipApp() {
             <PaymentSection
               key="payment"
               onConfirm={() => {
-                setPaymentConfirmed(true);
                 setStage("submit");
               }}
               onBack={() => setStage("form")}
@@ -105,42 +102,15 @@ export function MembershipApp() {
             <SubmitSection
               key="submit"
               data={data}
-              paymentConfirmed={paymentConfirmed}
             />
           )}
         </AnimatePresence>
       </main>
-
-      <Footer />
     </div>
   );
 }
 
 /* ---------------- Header / Footer ---------------- */
-
-function Header() {
-  return (
-    <header className="relative z-10 border-b border-border/50 bg-background/80 backdrop-blur-xl">
-      <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-        <div className="flex items-center gap-3">
-          <CrossLogo />
-          <div className="leading-tight">
-            <p className="text-sm font-semibold tracking-wide text-foreground">
-              Red Cross Club
-            </p>
-            <p className="text-[11px] uppercase tracking-[0.18em] text-muted-foreground">
-              University of Abuja
-            </p>
-          </div>
-        </div>
-        <div className="hidden items-center gap-2 rounded-full border border-border/60 bg-card/60 px-3 py-1.5 text-xs text-muted-foreground sm:flex">
-          <Sparkles className="size-3.5 text-primary" />
-          2025/2026 Membership Drive
-        </div>
-      </div>
-    </header>
-  );
-}
 
 function CrossLogo({ className }: { className?: string }) {
   return (
@@ -155,17 +125,6 @@ function CrossLogo({ className }: { className?: string }) {
         <div className="absolute h-5 w-1.5 rounded-sm bg-primary-foreground" />
       </div>
     </div>
-  );
-}
-
-function Footer() {
-  return (
-    <footer className="relative z-10 border-t border-border/50 bg-background/60 py-8">
-      <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-2 px-6 text-center text-xs text-muted-foreground sm:flex-row sm:text-left">
-        <p>© {new Date().getFullYear()} Red Cross Club — University of Abuja.</p>
-        <p>Humanity · Impartiality · Neutrality</p>
-      </div>
-    </footer>
   );
 }
 
