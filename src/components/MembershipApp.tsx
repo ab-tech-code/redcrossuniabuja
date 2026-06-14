@@ -10,7 +10,6 @@ import {
   Heart,
   Phone,
   ShieldCheck,
-  Sparkles,
   Users,
   Activity,
   Clock,
@@ -67,13 +66,11 @@ type Stage = "intro" | "form" | "payment" | "submit";
 export function MembershipApp() {
   const [stage, setStage] = useState<Stage>("intro");
   const [data, setData] = useState<FormData | null>(null);
-  const [paymentConfirmed, setPaymentConfirmed] = useState(false);
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <div className="relative text-foreground">
       <Toaster position="top-center" richColors />
       <BackgroundOrnaments />
-      <Header />
 
       <main className="relative">
         <AnimatePresence mode="wait">
@@ -95,7 +92,6 @@ export function MembershipApp() {
             <PaymentSection
               key="payment"
               onConfirm={() => {
-                setPaymentConfirmed(true);
                 setStage("submit");
               }}
               onBack={() => setStage("form")}
@@ -105,42 +101,15 @@ export function MembershipApp() {
             <SubmitSection
               key="submit"
               data={data}
-              paymentConfirmed={paymentConfirmed}
             />
           )}
         </AnimatePresence>
       </main>
-
-      <Footer />
     </div>
   );
 }
 
 /* ---------------- Header / Footer ---------------- */
-
-function Header() {
-  return (
-    <header className="relative z-10 border-b border-border/50 bg-background/80 backdrop-blur-xl">
-      <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-        <div className="flex items-center gap-3">
-          <CrossLogo />
-          <div className="leading-tight">
-            <p className="text-sm font-semibold tracking-wide text-foreground">
-              Red Cross Club
-            </p>
-            <p className="text-[11px] uppercase tracking-[0.18em] text-muted-foreground">
-              University of Abuja
-            </p>
-          </div>
-        </div>
-        <div className="hidden items-center gap-2 rounded-full border border-border/60 bg-card/60 px-3 py-1.5 text-xs text-muted-foreground sm:flex">
-          <Sparkles className="size-3.5 text-primary" />
-          2025/2026 Membership Drive
-        </div>
-      </div>
-    </header>
-  );
-}
 
 function CrossLogo({ className }: { className?: string }) {
   return (
@@ -155,17 +124,6 @@ function CrossLogo({ className }: { className?: string }) {
         <div className="absolute h-5 w-1.5 rounded-sm bg-primary-foreground" />
       </div>
     </div>
-  );
-}
-
-function Footer() {
-  return (
-    <footer className="relative z-10 border-t border-border/50 bg-background/60 py-8">
-      <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-2 px-6 text-center text-xs text-muted-foreground sm:flex-row sm:text-left">
-        <p>© {new Date().getFullYear()} Red Cross Club — University of Abuja.</p>
-        <p>Humanity · Impartiality · Neutrality</p>
-      </div>
-    </footer>
   );
 }
 
@@ -676,9 +634,15 @@ function PaymentSection({
 
         <div className="border-t border-border bg-muted/40 p-5 text-sm text-muted-foreground">
           <p>
-            After transferring, click <span className="font-semibold text-foreground">"I've paid"</span> below.
-            On the next step you'll send your details and proof of payment to our
-            coordinator on WhatsApp.
+            After transferring, click{" "}
+            <span className="font-semibold text-foreground">"Payment Complete"</span>{" "}
+            below. On the next step you'll send your details and a screenshot of
+            your payment receipt to our coordinator on WhatsApp.
+          </p>
+          <p className="mt-3 rounded-lg border border-primary/20 bg-primary/5 p-3 text-foreground">
+            <span className="font-semibold">Important:</span> the name you use
+            in this form must match the name used to make the bank transfer.
+            This is how we verify your payment.
           </p>
         </div>
       </div>
@@ -700,7 +664,7 @@ function PaymentSection({
           onClick={onConfirm}
           className="h-11 rounded-full bg-gradient-to-r from-primary to-primary-deep px-7 font-semibold shadow-[0_15px_30px_-12px_var(--primary)]"
         >
-          <Check className="size-4" /> I've Paid — Continue
+          <Check className="size-4" /> Payment Complete — Continue
         </Button>
       </div>
     </motion.section>
@@ -746,7 +710,7 @@ function DetailRow({
 
 /* ---------------- Submit / WhatsApp ---------------- */
 
-function buildWhatsAppMessage(data: FormData, paid: boolean) {
+function buildWhatsAppMessage(data: FormData) {
   const lines = [
     "*RED CROSS CLUB — UNIABUJA*",
     "_New Membership Submission_",
@@ -772,23 +736,22 @@ function buildWhatsAppMessage(data: FormData, paid: boolean) {
     `*12. Availability:* ${data.availability}`,
     "",
     `*Consent:* ✅ Given`,
-    `*Payment:* ${paid ? `✅ Paid — ₦${clubConfig.membershipFee.toLocaleString()}` : "Pending"}`,
+    `*Payment:* ⏳ Confirmation Pending — ₦${clubConfig.membershipFee.toLocaleString()}`,
+    `_(Name on payment must match the Full Name above.)_`,
     "",
-    "_(Please attach payment receipt to this chat.)_",
+    "_(Please attach your payment receipt to this chat.)_",
   ];
   return lines.join("\n");
 }
 
 function SubmitSection({
   data,
-  paymentConfirmed,
 }: {
   data: FormData;
-  paymentConfirmed: boolean;
 }) {
   const message = useMemo(
-    () => buildWhatsAppMessage(data, paymentConfirmed),
-    [data, paymentConfirmed],
+    () => buildWhatsAppMessage(data),
+    [data],
   );
   const waUrl = `https://wa.me/${clubConfig.whatsappNumber}?text=${encodeURIComponent(message)}`;
 
@@ -818,17 +781,24 @@ function SubmitSection({
         initial={{ scale: 0.6, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         transition={{ type: "spring", stiffness: 180, damping: 14 }}
-        className="mx-auto grid size-16 place-items-center rounded-full bg-[color:var(--success)]/15 text-[color:var(--success)]"
+        className="mx-auto grid size-16 place-items-center rounded-full bg-primary/10 text-primary"
       >
-        <Check className="size-8" />
+        <Clock className="size-8" />
       </motion.div>
 
       <h2 className="mt-6 text-center text-3xl font-bold sm:text-4xl">
-        Payment confirmed. One last step.
+        Payment confirmation pending.
       </h2>
       <p className="mx-auto mt-3 max-w-xl text-center text-muted-foreground">
-        Send your filled form and proof of payment to our coordinator on
-        WhatsApp to finalize your membership.
+        We haven't verified your payment yet — that's the next step. Please
+        submit your filled form together with a screenshot of your payment
+        receipt to our coordinator on WhatsApp so we can confirm and finalize
+        your membership.
+      </p>
+      <p className="mx-auto mt-3 max-w-xl rounded-xl border border-primary/20 bg-primary/5 p-3 text-center text-sm text-foreground">
+        <span className="font-semibold">Reminder:</span> the name you used in
+        this form must match the name used for the bank transfer. Attach your
+        payment receipt before sending.
       </p>
 
       <div className="mt-8 rounded-3xl border border-border/60 bg-card p-6 shadow-[var(--shadow-card)] sm:p-8">
