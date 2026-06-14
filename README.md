@@ -1,10 +1,45 @@
 # Red Cross Club — University of Abuja
 
-A professional, frontend-only membership website for the **Red Cross Club, University of Abuja**.
-Members fill a multi-step form, are shown bank payment details with a 15-minute countdown,
-then submit their completed form (plus proof of payment) to a coordinator on **WhatsApp**.
+A professional, frontend-only membership website for the **Red Cross Club,
+University of Abuja**. Visitors browse Home / About / Services / Contact,
+fill a multi-step membership form, see bank payment details with a 15-minute
+countdown, then submit their filled form together with a screenshot of their
+payment receipt to a coordinator on **WhatsApp** for confirmation.
 
 No backend, no database — everything runs in the browser.
+
+---
+
+## Tech stack (and a note about "React + Vite")
+
+Under the hood this project is **React 19 + Vite 7**, built on top of
+**TanStack Start** (which is the framework Lovable provisions for every new
+project). TanStack Start gives us:
+
+* file-based routing (works exactly like React Router DOM, but type-safe)
+* automatic code-splitting
+* SSR-ready production builds
+
+Styling uses **Tailwind CSS v4**, which compiles to plain CSS at build time —
+so the deployed site only ships traditional CSS, no runtime framework.
+
+If you want to keep extending the site, just add a new file in `src/routes/`
+— it becomes a new page automatically.
+
+---
+
+## Pages
+
+| Route        | File                          | Purpose                                              |
+| ------------ | ----------------------------- | ---------------------------------------------------- |
+| `/`          | `src/routes/index.tsx`        | Home + membership form / payment / WhatsApp submit   |
+| `/about`     | `src/routes/about.tsx`        | About the club — mission, values, community          |
+| `/services`  | `src/routes/services.tsx`     | Programmes & services we offer                       |
+| `/contact`   | `src/routes/contact.tsx`      | Contact channels (WhatsApp, phone, email, location)  |
+
+Navigation between pages uses the shared **`SiteHeader`** component
+(`src/components/SiteHeader.tsx`), which includes a desktop nav and a
+hamburger **mobile menu** that collapses cleanly on phones and tablets.
 
 ---
 
@@ -25,19 +60,32 @@ All of your real-world details live in a single file:
 | `paymentWindowMinutes` | How long the countdown gives the user to pay (default `15`).               |
 | `callNumber`           | Optional alternative phone number for calls/SMS.                           |
 
-Anywhere you see `PLACEHOLDER_…` in that file, replace it with your real value.
+Anywhere you see `PLACEHOLDER_…` in the project, replace it with your real
+value. Other placeholders to look out for:
+
+* `src/routes/contact.tsx` — email address and meeting venue
 
 ---
 
 ## How the flow works
 
-1. **Landing page** — branded intro with a CTA to begin the membership form.
-2. **Membership form** — collects all 12 questions (full name, matric number, department, level, faculty, gender, phone, email, motivation, volunteer experience, skills, availability) and a required consent checkbox. Inputs are validated client-side with Zod.
-3. **Payment screen** — shows your bank name, account number and account name with copy-to-clipboard buttons and a live 15-minute countdown timer.
-4. **Submit screen** — when the user clicks *"I've Paid — Continue"*, all their answers are formatted into a single WhatsApp message and a **green WhatsApp button** opens `wa.me/<your-number>` with the message pre-filled. The user just attaches their payment receipt and hits send.
-5. **No WhatsApp fallback** — the same number is shown so the user can call/SMS a coordinator with their payment confirmation.
+1. **Landing page (`/`)** — branded intro with a CTA to begin the membership form.
+2. **Membership form** — 12 required/optional questions plus a consent checkbox.
+   Inputs are validated client-side with Zod.
+3. **Payment screen** — your bank name, account number and account name with
+   copy-to-clipboard buttons and a live 15-minute countdown timer. The user
+   is reminded that **the name on the form must match the name used for the
+   bank transfer** so you can verify payment.
+4. **Submit screen** — after the user clicks *"Payment Complete — Continue"*,
+   the site shows a **"Payment confirmation pending"** message (since you
+   haven't actually verified the payment yet). It formats all their answers
+   into a single WhatsApp message and opens `wa.me/<your-number>` with the
+   message pre-filled. The user attaches their payment receipt screenshot
+   and hits send.
+5. **No-WhatsApp fallback** — the same number is shown so the user can call
+   or SMS a coordinator with the payment confirmation.
 
-Nothing is stored anywhere — the entire submission goes directly to your WhatsApp.
+Nothing is stored anywhere — every submission goes directly to your WhatsApp.
 
 ---
 
@@ -102,11 +150,16 @@ src/
 ├── lib/
 │   └── club-config.ts          ← EDIT THIS with your real WhatsApp + bank details
 ├── components/
-│   ├── MembershipApp.tsx       ← All the screens (intro, form, payment, submit)
+│   ├── SiteHeader.tsx          ← Shared responsive header + mobile menu
+│   ├── SiteFooter.tsx          ← Shared footer (links + contact)
+│   ├── MembershipApp.tsx       ← Home-page flow: intro → form → payment → submit
 │   └── ui/                     ← Reusable UI primitives (Button, Input, etc.)
 ├── routes/
-│   ├── __root.tsx              ← Root layout, fonts, meta tags
-│   └── index.tsx               ← Home page (renders MembershipApp)
+│   ├── __root.tsx              ← Root layout (wraps every page w/ header+footer)
+│   ├── index.tsx               ← Home (renders MembershipApp)
+│   ├── about.tsx               ← /about
+│   ├── services.tsx            ← /services
+│   └── contact.tsx             ← /contact
 └── styles.css                  ← Design tokens (colors, fonts)
 ```
 

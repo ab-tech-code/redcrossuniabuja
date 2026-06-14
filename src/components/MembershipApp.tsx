@@ -10,7 +10,6 @@ import {
   Heart,
   Phone,
   ShieldCheck,
-  Sparkles,
   Users,
   Activity,
   Clock,
