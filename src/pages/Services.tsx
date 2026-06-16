@@ -1,4 +1,5 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+// /services page — list of programmes the club offers.
+import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import {
   Activity,
@@ -8,26 +9,7 @@ import {
   Megaphone,
   Users,
 } from "lucide-react";
-
-export const Route = createFileRoute("/services")({
-  head: () => ({
-    meta: [
-      { title: "Services — Red Cross Club, University of Abuja" },
-      {
-        name: "description",
-        content:
-          "First aid training, blood donation drives, disaster response, community outreach and more — services offered by the Red Cross Club at UniAbuja.",
-      },
-      { property: "og:title", content: "Services — Red Cross Club" },
-      {
-        property: "og:description",
-        content:
-          "Discover the programmes and services the Red Cross Club offers to students and the community.",
-      },
-    ],
-  }),
-  component: ServicesPage,
-});
+import { useDocumentTitle } from "@/hooks/useDocumentTitle";
 
 const SERVICES = [
   {
@@ -62,7 +44,12 @@ const SERVICES = [
   },
 ];
 
-function ServicesPage() {
+export default function Services() {
+  useDocumentTitle(
+    "Services — Red Cross Club, University of Abuja",
+    "First aid training, blood donation drives, disaster response, community outreach and more — services offered by the Red Cross Club at UniAbuja.",
+  );
+
   return (
     <section className="mx-auto max-w-6xl px-6 py-16 sm:py-20">
       <motion.div

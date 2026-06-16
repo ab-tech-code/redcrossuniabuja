@@ -1,188 +1,186 @@
 # Red Cross Club — University of Abuja
 
-A professional, frontend-only membership website for the **Red Cross Club,
-University of Abuja**. Visitors browse Home / About / Services / Contact,
-fill a multi-step membership form, see bank payment details with a 15-minute
-countdown, then submit their filled form together with a screenshot of their
-payment receipt to a coordinator on **WhatsApp** for confirmation.
-
-No backend, no database — everything runs in the browser.
+A membership website for the **Red Cross Club, University of Abuja**.
+Built with **Vite + React + React Router** as a plain static SPA — the
+production build is just an `index.html` + `assets/` folder you can upload
+to **any** static host (Netlify, Vercel, GitHub Pages, Hostinger, cPanel,
+Cloudflare Pages, etc.).
 
 ---
 
-## Tech stack (and a note about "React + Vite")
+## 1. Quick start (local development)
 
-Under the hood this project is **React 19 + Vite 7**, built on top of
-**TanStack Start** (which is the framework Lovable provisions for every new
-project). TanStack Start gives us:
-
-* file-based routing (works exactly like React Router DOM, but type-safe)
-* automatic code-splitting
-* SSR-ready production builds
-
-Styling uses **Tailwind CSS v4**, which compiles to plain CSS at build time —
-so the deployed site only ships traditional CSS, no runtime framework.
-
-If you want to keep extending the site, just add a new file in `src/routes/`
-— it becomes a new page automatically.
-
----
-
-## Pages
-
-| Route        | File                          | Purpose                                              |
-| ------------ | ----------------------------- | ---------------------------------------------------- |
-| `/`          | `src/routes/index.tsx`        | Home + membership form / payment / WhatsApp submit   |
-| `/about`     | `src/routes/about.tsx`        | About the club — mission, values, community          |
-| `/services`  | `src/routes/services.tsx`     | Programmes & services we offer                       |
-| `/contact`   | `src/routes/contact.tsx`      | Contact channels (WhatsApp, phone, email, location)  |
-
-Navigation between pages uses the shared **`SiteHeader`** component
-(`src/components/SiteHeader.tsx`), which includes a desktop nav and a
-hamburger **mobile menu** that collapses cleanly on phones and tablets.
-
----
-
-## What you MUST edit before going live
-
-All of your real-world details live in a single file:
-
-**`src/lib/club-config.ts`**
-
-| Field                  | What it is                                                                 |
-| ---------------------- | -------------------------------------------------------------------------- |
-| `whatsappNumber`       | Coordinator's WhatsApp number in **international digits only** (no `+`, no spaces). Example for Nigeria: `2348012345678`. This is what powers the WhatsApp deep link. |
-| `whatsappDisplay`      | A human-readable version shown on the page (e.g. `+234 801 234 5678`).     |
-| `membershipFee`        | The membership fee in Naira (just the number, no commas).                  |
-| `bank.name`            | The bank where you receive payments (e.g. `Access Bank`).                  |
-| `bank.accountName`     | The account holder name.                                                   |
-| `bank.accountNumber`   | The 10-digit account number.                                               |
-| `paymentWindowMinutes` | How long the countdown gives the user to pay (default `15`).               |
-| `callNumber`           | Optional alternative phone number for calls/SMS.                           |
-
-Anywhere you see `PLACEHOLDER_…` in the project, replace it with your real
-value. Other placeholders to look out for:
-
-* `src/routes/contact.tsx` — email address and meeting venue
-
----
-
-## How the flow works
-
-1. **Landing page (`/`)** — branded intro with a CTA to begin the membership form.
-2. **Membership form** — 12 required/optional questions plus a consent checkbox.
-   Inputs are validated client-side with Zod.
-3. **Payment screen** — your bank name, account number and account name with
-   copy-to-clipboard buttons and a live 15-minute countdown timer. The user
-   is reminded that **the name on the form must match the name used for the
-   bank transfer** so you can verify payment.
-4. **Submit screen** — after the user clicks *"Payment Complete — Continue"*,
-   the site shows a **"Payment confirmation pending"** message (since you
-   haven't actually verified the payment yet). It formats all their answers
-   into a single WhatsApp message and opens `wa.me/<your-number>` with the
-   message pre-filled. The user attaches their payment receipt screenshot
-   and hits send.
-5. **No-WhatsApp fallback** — the same number is shown so the user can call
-   or SMS a coordinator with the payment confirmation.
-
-Nothing is stored anywhere — every submission goes directly to your WhatsApp.
-
----
-
-## Running locally
-
-### Prerequisites
-
-You need **one** of these JavaScript runtimes installed on your machine:
-
-- [Bun](https://bun.sh) (recommended — this project ships a `bun.lock`)
-- or [Node.js 20+](https://nodejs.org) with npm/pnpm/yarn
-
-### Install dependencies
+You need **Node.js 20+** installed. Then in this folder:
 
 ```bash
-# with bun (recommended)
-bun install
-
-# or with npm
-npm install
+npm install        # install dependencies (one-time)
+npm run dev        # start dev server at http://localhost:8080
 ```
 
-All required packages are already listed in `package.json`. The key ones are:
+> You can also use `bun install` / `bun run dev` if you prefer Bun.
 
-- `@tanstack/react-start`, `@tanstack/react-router` — app framework + routing
-- `react`, `react-dom` — UI
-- `tailwindcss` v4, `@tailwindcss/vite` — styling
-- `framer-motion` — animations
-- `react-hook-form`, `zod`, `@hookform/resolvers` — form + validation
-- `lucide-react` — icons
-- `sonner` — toast notifications
-- shadcn-style UI primitives (already inside `src/components/ui/`)
-
-You don't need to install them one by one — `bun install` / `npm install` handles everything.
-
-### Start the dev server
+## 2. Production build
 
 ```bash
-bun run dev
-# or
-npm run dev
-```
-
-Open the URL printed in your terminal (usually <http://localhost:5173> or <http://localhost:8080>).
-
-### Build for production
-
-```bash
-bun run build
-# or
 npm run build
 ```
 
-The output goes into the standard build folder and can be deployed to any static host (Vercel, Netlify, Cloudflare Pages, GitHub Pages, etc.). Since the app is frontend-only, no server configuration is required.
+Creates a `dist/` folder:
+
+```
+dist/
+  index.html
+  assets/
+    index-[hash].js
+    index-[hash].css
+```
+
+Upload the **contents of `dist/`** to your hosting provider. That's it.
+
+Preview the production build locally:
+
+```bash
+npm run preview
+```
+
+## 3. Hosting / SPA fallback (IMPORTANT)
+
+This is a Single Page App, so the server must serve `index.html` for any
+unknown URL — otherwise refreshing `/about` will return 404.
+
+- **Netlify / Cloudflare Pages**: handled by `public/_redirects` (already included).
+- **Vercel (static)** — add `vercel.json` at project root:
+  ```json
+  { "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }] }
+  ```
+- **Apache / cPanel / Hostinger** — add `.htaccess` inside the uploaded folder:
+  ```
+  RewriteEngine On
+  RewriteBase /
+  RewriteRule ^index\.html$ - [L]
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule . /index.html [L]
+  ```
+- **Nginx** — `try_files $uri /index.html;` in your `location /` block.
+- **GitHub Pages** — copy `dist/index.html` to `dist/404.html` before uploading.
 
 ---
 
-## Project structure (the important bits)
+## 4. What you need to change (placeholders)
+
+All editable values live in **`src/lib/club-config.ts`**. Open it and
+replace each `PLACEHOLDER_...` value:
+
+| Field | What to put |
+|---|---|
+| `whatsappNumber` | Coordinator WhatsApp number, international format **without `+`** (e.g. `2348012345678`). |
+| `whatsappDisplay` | Same number formatted nicely (e.g. `+234 801 234 5678`). |
+| `callNumber` | Phone number for "Call us". |
+| `membershipFee` | Fee amount as a number (e.g. `2000`). |
+| `bank.name` | Bank name (e.g. `Access Bank`). |
+| `bank.accountName` | Account holder name. |
+| `bank.accountNumber` | Account number. |
+
+Other text-only placeholders (search the codebase for `PLACEHOLDER`):
+- `src/pages/Contact.tsx` — email address and meeting venue.
+
+---
+
+## 5. How the site works (user flow)
+
+1. Visitor opens **`/`** (Home), sees the hero, clicks **Begin Membership Form**.
+2. Fills the **membership form**.
+3. Sees the **Payment** screen with bank details to copy. They transfer
+   the fee using **the exact name they entered on the form**.
+4. Clicks **"I have paid"** → the site shows **"Payment Pending Confirmation"**
+   (the club still needs to manually verify the transfer).
+5. Clicks **"Submit on WhatsApp"** → opens WhatsApp with a pre-filled
+   message containing all their details. They can attach the payment
+   receipt before sending.
+6. A coordinator confirms the payment and welcomes the new member.
+
+Other pages:
+- **`/about`** — mission, values, community.
+- **`/services`** — programmes the club runs.
+- **`/contact`** — WhatsApp / phone / email / location.
+
+---
+
+## 6. Project structure
 
 ```
+index.html                  Vite entry — loads /src/main.tsx
+vite.config.ts              Vite + React + Tailwind config
+package.json
+public/
+  _redirects                SPA fallback for Netlify-style hosts
 src/
-├── lib/
-│   └── club-config.ts          ← EDIT THIS with your real WhatsApp + bank details
-├── components/
-│   ├── SiteHeader.tsx          ← Shared responsive header + mobile menu
-│   ├── SiteFooter.tsx          ← Shared footer (links + contact)
-│   ├── MembershipApp.tsx       ← Home-page flow: intro → form → payment → submit
-│   └── ui/                     ← Reusable UI primitives (Button, Input, etc.)
-├── routes/
-│   ├── __root.tsx              ← Root layout (wraps every page w/ header+footer)
-│   ├── index.tsx               ← Home (renders MembershipApp)
-│   ├── about.tsx               ← /about
-│   ├── services.tsx            ← /services
-│   └── contact.tsx             ← /contact
-└── styles.css                  ← Design tokens (colors, fonts)
+  main.tsx                  React + BrowserRouter bootstrap
+  App.tsx                   Shared header/footer + routes table
+  styles.css                Tailwind v4 + design tokens (colors, fonts)
+  hooks/
+    useDocumentTitle.ts     Per-page <title> + meta description
+  pages/
+    Home.tsx                /          (membership flow)
+    About.tsx               /about
+    Services.tsx            /services
+    Contact.tsx             /contact
+    NotFound.tsx            404 catch-all
+  components/
+    MembershipApp.tsx       Intro → form → payment → submit flow
+    SiteHeader.tsx          Top nav (desktop + mobile hamburger)
+    SiteFooter.tsx          Bottom footer
+    ui/                     Reusable UI primitives (buttons, inputs…)
+  lib/
+    club-config.ts          ← EDIT THIS for bank details + phone numbers
+    utils.ts
 ```
 
 ---
 
-## Customizing further
+## 7. Adding a new page
 
-- **Brand colors** — edit the `--primary`, `--primary-glow`, `--primary-deep` tokens in `src/styles.css`.
-- **Form questions** — add/remove fields in `src/components/MembershipApp.tsx` (look for the `schema` and the `FormSection` component). Remember to also update `buildWhatsAppMessage` so the new fields appear in the WhatsApp message.
-- **Membership fee amount** — change `membershipFee` in `src/lib/club-config.ts`.
-- **Payment window** — change `paymentWindowMinutes` in the same file.
-- **Page title / description / SEO** — edit the `head()` block in `src/routes/index.tsx` and `src/routes/__root.tsx`.
+1. Create the component under `src/pages/`, e.g. `src/pages/Events.tsx`:
+   ```tsx
+   import { useDocumentTitle } from "@/hooks/useDocumentTitle";
+   export default function Events() {
+     useDocumentTitle("Events — Red Cross Club", "Upcoming club events.");
+     return (
+       <section className="mx-auto max-w-5xl px-6 py-16">
+         <h1>Events</h1>
+       </section>
+     );
+   }
+   ```
+2. Register the route in `src/App.tsx`:
+   ```tsx
+   <Route path="/events" element={<Events />} />
+   ```
+3. (Optional) Add a link in `src/components/SiteHeader.tsx` and `SiteFooter.tsx`.
 
 ---
 
-## Security note
+## 8. Tech stack
 
-Because the app is frontend-only:
-
-- All form data stays in the user's browser until they hit the WhatsApp button.
-- The bank details are visible in the page source — that's fine because they're meant to be public.
-- **Never** put any secret key, API token, or admin password into `src/lib/club-config.ts` — anything in this file ships to the browser.
+- **React 19** + **Vite 8** + **TypeScript**
+- **React Router DOM v6** — client-side routing
+- **Tailwind CSS v4** — utility-first styling
+- **react-hook-form** + **zod** — form + validation
+- **framer-motion** — animations
+- **lucide-react** — icons
+- **sonner** — toast notifications
 
 ---
 
-Built with ❤ for the Red Cross Club, University of Abuja.
+## 9. Available scripts
+
+| Command | What it does |
+|---|---|
+| `npm run dev` | Dev server with hot reload (http://localhost:8080). |
+| `npm run build` | Production build to `dist/`. |
+| `npm run preview` | Preview the production build locally. |
+| `npm run lint` | ESLint. |
+| `npm run format` | Prettier. |
+
+Happy serving 🩺❤️

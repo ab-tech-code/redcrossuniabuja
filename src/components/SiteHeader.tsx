@@ -1,12 +1,10 @@
+// Shared site header with desktop nav + mobile hamburger menu.
+// Rendered once in src/App.tsx and shows on every page.
 import { useState } from "react";
-import { Link } from "@tanstack/react-router";
+import { NavLink, Link } from "react-router-dom";
 import { Menu, X, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-/**
- * Shared site header with desktop nav + mobile hamburger menu.
- * Rendered once in src/routes/__root.tsx and shows on every page.
- */
 const NAV = [
   { to: "/", label: "Home" },
   { to: "/about", label: "About" },
@@ -20,13 +18,10 @@ export function SiteHeader() {
   return (
     <header className="relative z-30 border-b border-border/50 bg-background/80 backdrop-blur-xl">
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 sm:px-6 sm:py-4">
-        {/* Brand */}
         <Link to="/" className="flex min-w-0 items-center gap-3">
           <CrossLogo />
           <div className="min-w-0 leading-tight">
-            <p className="truncate text-sm font-semibold text-foreground">
-              Red Cross Club
-            </p>
+            <p className="truncate text-sm font-semibold text-foreground">Red Cross Club</p>
             <p className="truncate text-[11px] uppercase tracking-[0.18em] text-muted-foreground">
               University of Abuja
             </p>
@@ -36,15 +31,21 @@ export function SiteHeader() {
         {/* Desktop nav */}
         <nav className="hidden items-center gap-1 md:flex">
           {NAV.map((item) => (
-            <Link
+            <NavLink
               key={item.to}
               to={item.to}
-              activeOptions={{ exact: true }}
-              activeProps={{ className: "bg-accent text-foreground" }}
-              className="rounded-full px-4 py-2 text-sm font-medium text-muted-foreground transition hover:bg-accent hover:text-foreground"
+              end={item.to === "/"}
+              className={({ isActive }) =>
+                cn(
+                  "rounded-full px-4 py-2 text-sm font-medium transition",
+                  isActive
+                    ? "bg-accent text-foreground"
+                    : "text-muted-foreground hover:bg-accent hover:text-foreground",
+                )
+              }
             >
               {item.label}
-            </Link>
+            </NavLink>
           ))}
           <span className="ml-3 hidden items-center gap-2 rounded-full border border-border/60 bg-card/60 px-3 py-1.5 text-xs text-muted-foreground lg:inline-flex">
             <Sparkles className="size-3.5 text-primary" />
@@ -52,7 +53,7 @@ export function SiteHeader() {
           </span>
         </nav>
 
-        {/* Mobile hamburger */}
+        {/* Mobile hamburger button */}
         <button
           type="button"
           aria-label={open ? "Close menu" : "Open menu"}
@@ -64,7 +65,7 @@ export function SiteHeader() {
         </button>
       </div>
 
-      {/* Mobile dropdown */}
+      {/* Mobile dropdown — collapses when a link is tapped */}
       <div
         className={cn(
           "overflow-hidden border-t border-border/50 bg-background/95 backdrop-blur-xl transition-[max-height,opacity] duration-300 md:hidden",
@@ -73,16 +74,22 @@ export function SiteHeader() {
       >
         <nav className="mx-auto flex max-w-6xl flex-col px-4 py-3">
           {NAV.map((item) => (
-            <Link
+            <NavLink
               key={item.to}
               to={item.to}
-              activeOptions={{ exact: true }}
-              activeProps={{ className: "bg-accent text-foreground" }}
+              end={item.to === "/"}
               onClick={() => setOpen(false)}
-              className="rounded-lg px-3 py-3 text-base font-medium text-muted-foreground transition hover:bg-accent hover:text-foreground"
+              className={({ isActive }) =>
+                cn(
+                  "rounded-lg px-3 py-3 text-base font-medium transition",
+                  isActive
+                    ? "bg-accent text-foreground"
+                    : "text-muted-foreground hover:bg-accent hover:text-foreground",
+                )
+              }
             >
               {item.label}
-            </Link>
+            </NavLink>
           ))}
         </nav>
       </div>

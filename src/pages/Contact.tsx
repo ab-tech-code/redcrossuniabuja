@@ -1,28 +1,15 @@
-import { createFileRoute } from "@tanstack/react-router";
+// /contact page — WhatsApp, phone, email, location. Numbers come from src/lib/club-config.ts.
 import { motion } from "framer-motion";
 import { Mail, MapPin, MessageCircle, Phone } from "lucide-react";
 import { clubConfig } from "@/lib/club-config";
+import { useDocumentTitle } from "@/hooks/useDocumentTitle";
 
-export const Route = createFileRoute("/contact")({
-  head: () => ({
-    meta: [
-      { title: "Contact — Red Cross Club, University of Abuja" },
-      {
-        name: "description",
-        content:
-          "Get in touch with the Red Cross Club, University of Abuja — WhatsApp, phone and location.",
-      },
-      { property: "og:title", content: "Contact the Red Cross Club" },
-      {
-        property: "og:description",
-        content: "Reach our coordinators on WhatsApp, by phone, or visit us on campus.",
-      },
-    ],
-  }),
-  component: ContactPage,
-});
+export default function Contact() {
+  useDocumentTitle(
+    "Contact — Red Cross Club, University of Abuja",
+    "Get in touch with the Red Cross Club, University of Abuja — WhatsApp, phone and location.",
+  );
 
-function ContactPage() {
   const waLink = `https://wa.me/${clubConfig.whatsappNumber}`;
 
   return (
@@ -76,9 +63,7 @@ function ContactPage() {
             <Mail className="size-5" />
           </div>
           <h2 className="mt-5 text-lg font-semibold">Email</h2>
-          <p className="mt-1 text-sm text-muted-foreground">
-            Drop us a message any time.
-          </p>
+          <p className="mt-1 text-sm text-muted-foreground">Drop us a message any time.</p>
           <p className="mt-3 font-medium text-foreground">
             PLACEHOLDER_EMAIL@uniabuja.edu.ng
           </p>

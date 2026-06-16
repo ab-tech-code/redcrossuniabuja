@@ -1,28 +1,14 @@
-import { createFileRoute } from "@tanstack/react-router";
+// /about page — mission, values, community.
 import { motion } from "framer-motion";
 import { Heart, ShieldCheck, Users } from "lucide-react";
+import { useDocumentTitle } from "@/hooks/useDocumentTitle";
 
-export const Route = createFileRoute("/about")({
-  head: () => ({
-    meta: [
-      { title: "About — Red Cross Club, University of Abuja" },
-      {
-        name: "description",
-        content:
-          "Learn about the Red Cross Club at the University of Abuja — our mission, values and history of humanitarian service.",
-      },
-      { property: "og:title", content: "About the Red Cross Club" },
-      {
-        property: "og:description",
-        content:
-          "Our mission, values and the students behind the Red Cross Club at University of Abuja.",
-      },
-    ],
-  }),
-  component: AboutPage,
-});
+export default function About() {
+  useDocumentTitle(
+    "About — Red Cross Club, University of Abuja",
+    "Learn about the Red Cross Club at the University of Abuja — our mission, values and history of humanitarian service.",
+  );
 
-function AboutPage() {
   return (
     <section className="mx-auto max-w-5xl px-6 py-16 sm:py-20">
       <motion.div

@@ -1,9 +1,7 @@
-import { Link } from "@tanstack/react-router";
+// Shared site footer. Rendered once in src/App.tsx.
+import { Link } from "react-router-dom";
 import { clubConfig } from "@/lib/club-config";
 
-/**
- * Shared site footer. Rendered once in src/routes/__root.tsx.
- */
 export function SiteFooter() {
   return (
     <footer className="relative z-10 mt-16 border-t border-border/50 bg-background/60">
@@ -18,9 +16,7 @@ export function SiteFooter() {
           </p>
         </div>
         <div>
-          <p className="text-xs font-semibold uppercase tracking-wider text-foreground">
-            Explore
-          </p>
+          <p className="text-xs font-semibold uppercase tracking-wider text-foreground">Explore</p>
           <ul className="mt-3 space-y-2 text-sm text-muted-foreground">
             <li><Link to="/" className="hover:text-foreground">Home</Link></li>
             <li><Link to="/about" className="hover:text-foreground">About</Link></li>
@@ -29,9 +25,7 @@ export function SiteFooter() {
           </ul>
         </div>
         <div>
-          <p className="text-xs font-semibold uppercase tracking-wider text-foreground">
-            Contact
-          </p>
+          <p className="text-xs font-semibold uppercase tracking-wider text-foreground">Contact</p>
           <ul className="mt-3 space-y-2 text-sm text-muted-foreground">
             <li>WhatsApp: {clubConfig.whatsappDisplay}</li>
             <li>Call: {clubConfig.callNumber}</li>
