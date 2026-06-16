@@ -1,0 +1,3 @@
+# Netlify-style SPA fallback: serve index.html for any unknown URL so
+# React Router can handle /about, /services, /contact deep links on refresh.
+/*    /index.html   200
