@@ -8,24 +8,24 @@
 export const clubConfig = {
   // Your club's WhatsApp number in INTERNATIONAL format, digits only.
   // Example for Nigeria: "2348012345678" (no +, no spaces, no dashes)
-  whatsappNumber: "PLACEHOLDER_WHATSAPP_NUMBER", // e.g. "2348012345678"
+  whatsappNumber: "2347042265967", // e.g. "2348012345678"
 
   // Human-readable version shown on the page (with formatting)
-  whatsappDisplay: "+234 PLACEHOLDER WHATSAPP",
+  whatsappDisplay: "+234 7042265967",
 
   // Membership fee in Naira (number only, no commas/symbols)
   membershipFee: 2000,
 
   // Bank payment details displayed after the form is submitted
   bank: {
-    name: "PLACEHOLDER BANK NAME",      // e.g. "Access Bank"
-    accountName: "PLACEHOLDER ACCOUNT NAME", // e.g. "Red Cross Club UniAbuja"
-    accountNumber: "0000000000",         // e.g. "1234567890"
+    name: "Opay",      // e.g. "Access Bank"
+    accountName: "Abdulhafiz Bashir", // e.g. "Red Cross Club UniAbuja"
+    accountNumber: "7042265967",         // e.g. "1234567890"
   },
 
   // Payment window in minutes
   paymentWindowMinutes: 15,
 
   // Optional: alternate phone number for calls if user has no WhatsApp
-  callNumber: "+234 PLACEHOLDER CALL",
+  callNumber: "+234 7042265967",
 };
