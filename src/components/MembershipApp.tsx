@@ -325,16 +325,16 @@ function FormSection({
       >
         <div className="grid gap-5 sm:grid-cols-2">
           <Field label="Full Name" required error={errors.fullName?.message}>
-            <Input placeholder="e.g. Aisha Bello" {...register("fullName")} />
+            <Input placeholder="e.g. Abacha Musa" {...register("fullName")} />
           </Field>
           <Field label="Matric Number" required error={errors.matricNumber?.message}>
-            <Input placeholder="e.g. UAB/2021/12345" {...register("matricNumber")} />
+            <Input placeholder="e.g. 24/208CSC/007" {...register("matricNumber")} />
           </Field>
           <Field label="Department" required error={errors.department?.message}>
-            <Input placeholder="e.g. Medicine and Surgery" {...register("department")} />
+            <Input placeholder="e.g. Computer Science" {...register("department")} />
           </Field>
           <Field label="Faculty" required error={errors.faculty?.message}>
-            <Input placeholder="e.g. Clinical Sciences" {...register("faculty")} />
+            <Input placeholder="e.g. Science" {...register("faculty")} />
           </Field>
           <Field label="Level" required error={errors.level?.message}>
             <Select onValueChange={(v) => setValue("level", v, { shouldValidate: true })}
@@ -367,7 +367,7 @@ function FormSection({
             <Input placeholder="e.g. 08012345678" {...register("phone")} />
           </Field>
           <Field label="Email Address" required error={errors.email?.message}>
-            <Input type="email" placeholder="you@example.com" {...register("email")} />
+            <Input type="email" placeholder="hafeez@gmail.com" {...register("email")} />
           </Field>
         </div>
 

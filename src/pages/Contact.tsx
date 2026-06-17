@@ -65,7 +65,7 @@ export default function Contact() {
           <h2 className="mt-5 text-lg font-semibold">Email</h2>
           <p className="mt-1 text-sm text-muted-foreground">Drop us a message any time.</p>
           <p className="mt-3 font-medium text-foreground">
-            PLACEHOLDER_EMAIL@uniabuja.edu.ng
+            redcrossuniabuja@gmail.com
           </p>
         </div>
 
@@ -76,7 +76,7 @@ export default function Contact() {
           <h2 className="mt-5 text-lg font-semibold">Find us</h2>
           <p className="mt-1 text-sm text-muted-foreground">Meetings every other week.</p>
           <p className="mt-3 font-medium text-foreground">
-            PLACEHOLDER MEETING VENUE,<br />University of Abuja, Main Campus.
+            COVOCATION GROUND,<br />University of Abuja, Main Campus.
           </p>
         </div>
       </div>
